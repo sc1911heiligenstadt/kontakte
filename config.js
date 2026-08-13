@@ -8,6 +8,21 @@ const TRAINERDATEN_URL = "https://sc1911heiligenstadt.github.io/Trainerdaten/";
 
 const APP_CHANGELOG = [
   {
+    version: "1.1",
+    groups: [
+      {
+        title: "Knöpfe zum Anrufen, für WhatsApp und für E-Mail",
+        items: [
+          "Neben jeder Telefonnummer steht jetzt ein Knopf „Anrufen“ — ein Tipp und das Telefon wählt.",
+          "Bei Handynummern kommt ein grüner WhatsApp-Knopf dazu: Er öffnet direkt das Nachrichtenfenster mit dieser Person.",
+          "Bei Festnetznummern erscheint der WhatsApp-Knopf bewusst nicht — dort gibt es kein WhatsApp, der Knopf könnte nur ins Leere führen.",
+          "Neben der E-Mail-Adresse steht ein Knopf „Mail“, der das Mailprogramm mit der Adresse öffnet.",
+          "Am Handy zeigen die Knöpfe nur ihr Symbol, damit die Karten schmal bleiben. Nummer und Adresse selbst lassen sich weiterhin auch direkt antippen."
+        ]
+      }
+    ]
+  },
+  {
     version: "1.0",
     groups: [
       {

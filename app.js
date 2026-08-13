@@ -34,6 +34,40 @@ function telHref(nummer) {
   return roh.replace(/(?!^)\+/g, "");
 }
 
+// WhatsApp verlangt in `wa.me/<nummer>` das internationale Format OHNE Plus und
+// OHNE führende Null — aus "0177 8587294" muss "491778587294" werden. Liefert ""
+// wenn sich das nicht sicher ableiten lässt.
+//
+// ⚠️ `LAND_VORWAHL` ist die Annahme „eine Nummer ohne Ländervorwahl ist deutsch".
+// Sie gilt für diesen Verein; wer das je anders braucht, ändert nur diese Zeile.
+const LAND_VORWAHL = "49";
+function waNummer(nummer) {
+  let n = String(nummer || "").replace(/[^\d+]/g, "").replace(/(?!^)\+/g, "");
+  if (n.startsWith("+")) n = n.slice(1);
+  else if (n.startsWith("00")) n = n.slice(2);
+  else if (n.startsWith("0")) n = LAND_VORWAHL + n.slice(1);
+  else return "";   // weder + noch 00 noch 0 -> Ländervorwahl unbekannt, nicht raten
+  return /^\d{8,15}$/.test(n) ? n : "";
+}
+
+// ⚠️ Der WhatsApp-Knopf erscheint nur bei einer erkennbaren MOBILnummer.
+// Eine Festnetznummer (03606 …) ist nie bei WhatsApp — der Knopf könnte dort nur
+// scheitern, und ein Knopf, der nur scheitern kann, ist schlechter als keiner
+// (gleiche Linie wie der Löschen-Knopf in der Personalakte).
+// Deutsche Mobilnummern beginnen nach der Ländervorwahl mit 15, 16 oder 17.
+// Bei einer AUSLÄNDISCHEN Nummer lässt sich das nicht beurteilen — dort wird der
+// Knopf gezeigt: wer eine internationale Nummer einträgt, hat sich etwas dabei
+// gedacht, und im Verein ist das die seltene Ausnahme.
+function waHref(nummer) {
+  const n = waNummer(nummer);
+  if (!n) return "";
+  if (n.startsWith(LAND_VORWAHL)) {
+    const ohneLand = n.slice(LAND_VORWAHL.length);
+    if (!/^1[5-7]/.test(ohneLand)) return "";
+  }
+  return "https://wa.me/" + n;
+}
+
 function adresseZeilen(a) {
   if (!a) return [];
   const zeilen = [];
@@ -96,20 +130,40 @@ function gefiltert() {
   });
 }
 
+// Ein Aktions-Knopf. Immer ein <a>, nie ein <button> mit JS dahinter: ein echter
+// Link öffnet die Telefon-/Mail-/WhatsApp-App des Geräts über dessen eigene
+// Schema-Behandlung, lässt sich lange drücken (Kopieren, „in neuem Tab") und
+// funktioniert auch, wenn das Skript später einmal klemmt.
+// `rel="noopener"` nur beim externen WhatsApp-Ziel.
+function aktionsKnopf(href, klasse, symbol, text, titel, extern) {
+  return `<a class="kontakt-aktion ${klasse}" href="${escapeHtml(href)}"` +
+    (extern ? ` target="_blank" rel="noopener"` : "") +
+    ` title="${escapeHtml(titel)}" aria-label="${escapeHtml(titel)}">` +
+    `<span aria-hidden="true">${symbol}</span><span class="ka-text">${escapeHtml(text)}</span></a>`;
+}
+
 function karteHtml(k) {
   const zeilen = [];
   if (k.telefon) {
+    const wa = waHref(k.telefon);
+    const knoepfe =
+      aktionsKnopf("tel:" + telHref(k.telefon), "ka-anruf", "📞", "Anrufen", "Anrufen: " + k.telefon, false) +
+      (wa ? aktionsKnopf(wa, "ka-wa", "💬", "WhatsApp", "WhatsApp-Nachricht an " + k.telefon, true) : "");
     zeilen.push(`
       <div class="kontakt-zeile">
         <span class="kz-symbol">📞</span>
-        <a href="tel:${escapeHtml(telHref(k.telefon))}">${escapeHtml(k.telefon)}</a>
+        <a class="kz-wert" href="tel:${escapeHtml(telHref(k.telefon))}">${escapeHtml(k.telefon)}</a>
+        <span class="kontakt-aktionen">${knoepfe}</span>
       </div>`);
   }
   if (k.email) {
     zeilen.push(`
       <div class="kontakt-zeile">
         <span class="kz-symbol">✉️</span>
-        <a href="mailto:${escapeHtml(k.email)}">${escapeHtml(k.email)}</a>
+        <a class="kz-wert" href="mailto:${escapeHtml(k.email)}">${escapeHtml(k.email)}</a>
+        <span class="kontakt-aktionen">${
+          aktionsKnopf("mailto:" + k.email, "ka-mail", "✉️", "Mail", "E-Mail schreiben an " + k.email, false)
+        }</span>
       </div>`);
   }
   const adr = adresseZeilen(k.adresse);

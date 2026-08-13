@@ -193,6 +193,65 @@ button.btn:disabled { opacity: 0.6; cursor: default; }
 .kontakt-zeile.kz-adresse { align-items: flex-start; }
 .kontakt-zeile .kz-adresse-text { line-height: 1.4; }
 
+/* ---------- Aktions-Knöpfe (Anrufen / WhatsApp / Mail) ----------
+   Die Zeile darf umbrechen: bei einer langen E-Mail-Adresse rutscht die Knopfgruppe
+   am Handy unter den Wert, statt die Karte seitlich aufzuziehen. `min-width: 0` am
+   Wert ist dafür Pflicht — ohne das behält er seine Wunschbreite und der Umbruch
+   greift nicht. */
+.kontakt-zeile { flex-wrap: wrap; }
+.kontakt-zeile .kz-wert { min-width: 0; flex: 1 1 auto; }
+/* `margin-left: auto` schiebt die Gruppe ans rechte Ende der Zeile — solange sie
+   dort Platz hat; nach dem Umbruch steht sie links unter dem Wert. */
+.kontakt-aktionen { display: flex; gap: 6px; flex: none; margin-left: auto; }
+
+.kontakt-aktion {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  /* ⚠️ 34 px Mindesthöhe, nicht die 29 px von `.btn.small`: das hier wird am Handy
+     mit dem Daumen getroffen, und daneben liegt ein zweiter Knopf. */
+  min-height: 34px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  color: white;
+  text-decoration: none;
+}
+/* ⚠️ Die Regel `.kontakt-zeile a { color: var(--blue) }` darüber ist gleich
+   spezifisch und stünde sonst je nach Reihenfolge gegen die Knopffarbe — deshalb
+   die Farbe hier über den zusammengesetzten Selektor setzen, nicht über !important. */
+.kontakt-zeile .kontakt-aktion { color: white; }
+.kontakt-zeile .kontakt-aktion:hover { text-decoration: none; opacity: 0.88; }
+.kontakt-aktion.ka-anruf { background: var(--blue); }
+/* Grün, damit der Knopf auf den ersten Blick als WhatsApp erkennbar ist — aber
+   deutlich dunkler als die Markenfarbe #25D366.
+   ⚠️ GEMESSEN, nicht geschätzt: #25D366 und auch das erste #1da851 lagen mit
+   3,1:1 unter der WCAG-AA-Schwelle von 4,5:1 für weißen Text dieser Größe
+   (13 px fett zählt NICHT als „großer Text"). #14803d ergibt 5,0:1. Wer hier
+   Richtung Markenfarbe zurückgeht, muss neu nachrechnen. */
+.kontakt-aktion.ka-wa { background: #14803d; }
+.kontakt-aktion.ka-mail { background: var(--muted); }
+
+/* Am Handy zählt jeder Millimeter: dort tragen die Knöpfe nur ihr Symbol.
+   ⚠️ Der Text wird NICHT durch das Symbol ersetzt, sondern nur optisch entfernt —
+   `aria-label` trägt die volle Beschriftung, ein Screenreader liest sie weiter. */
+@media (max-width: 560px) {
+  /* ⚠️ Gemessen 38×34 px, als der Text nur wegfiel — zu klein für zwei
+     nebeneinanderliegende Daumenziele. 44×40 px ist die Fläche, die am Gerät
+     zuverlässig getroffen wird; das Symbol darin bleibt gleich groß. */
+  .kontakt-aktion { padding: 5px 10px; min-width: 44px; min-height: 40px; justify-content: center; font-size: 15px; }
+  .kontakt-aktion .ka-text {
+    position: absolute;
+    width: 1px; height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+}
+
 /* Wer nur seinen Namen freigegeben hat, hätte sonst eine leere Karte — der Satz sagt,
    dass das Absicht ist und kein Ladefehler. */
 .kontakt-nur-name { font-size: 13px; color: var(--muted); font-style: italic; }
