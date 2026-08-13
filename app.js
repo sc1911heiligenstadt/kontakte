@@ -142,29 +142,35 @@ function aktionsKnopf(href, klasse, symbol, text, titel, extern) {
     `<span aria-hidden="true">${symbol}</span><span class="ka-text">${escapeHtml(text)}</span></a>`;
 }
 
+// ⚠️ Die Knöpfe stehen GESAMMELT unter den Angaben, nicht je Zeile rechts daneben.
+// Erster Entwurf hatte sie in der Zeile: bei einer kurzen Nummer standen sie
+// daneben, bei einer langen E-Mail-Adresse brachen sie in eine eigene Zeile um und
+// klebten dort rechts — jede Karte sah anders aus, und in einer Rasterzeile
+// nebeneinander wirkte das unruhig (von Michel per Screenshot gemeldet).
+// Gesammelt unten hat jede Karte denselben Aufbau, unabhängig von der Textlänge:
+// oben die Angaben zum Lesen, unten die Aktionen zum Tippen.
+// Die Werte selbst bleiben zusätzlich anklickbar.
 function karteHtml(k) {
   const zeilen = [];
+  const knoepfe = [];
+
   if (k.telefon) {
-    const wa = waHref(k.telefon);
-    const knoepfe =
-      aktionsKnopf("tel:" + telHref(k.telefon), "ka-anruf", "📞", "Anrufen", "Anrufen: " + k.telefon, false) +
-      (wa ? aktionsKnopf(wa, "ka-wa", "💬", "WhatsApp", "WhatsApp-Nachricht an " + k.telefon, true) : "");
     zeilen.push(`
       <div class="kontakt-zeile">
         <span class="kz-symbol">📞</span>
         <a class="kz-wert" href="tel:${escapeHtml(telHref(k.telefon))}">${escapeHtml(k.telefon)}</a>
-        <span class="kontakt-aktionen">${knoepfe}</span>
       </div>`);
+    knoepfe.push(aktionsKnopf("tel:" + telHref(k.telefon), "ka-anruf", "📞", "Anrufen", "Anrufen: " + k.telefon, false));
+    const wa = waHref(k.telefon);
+    if (wa) knoepfe.push(aktionsKnopf(wa, "ka-wa", "💬", "WhatsApp", "WhatsApp-Nachricht an " + k.telefon, true));
   }
   if (k.email) {
     zeilen.push(`
       <div class="kontakt-zeile">
         <span class="kz-symbol">✉️</span>
         <a class="kz-wert" href="mailto:${escapeHtml(k.email)}">${escapeHtml(k.email)}</a>
-        <span class="kontakt-aktionen">${
-          aktionsKnopf("mailto:" + k.email, "ka-mail", "✉️", "Mail", "E-Mail schreiben an " + k.email, false)
-        }</span>
       </div>`);
+    knoepfe.push(aktionsKnopf("mailto:" + k.email, "ka-mail", "✉️", "Mail", "E-Mail schreiben an " + k.email, false));
   }
   const adr = adresseZeilen(k.adresse);
   if (adr.length) {
@@ -178,10 +184,16 @@ function karteHtml(k) {
   const inhalt = zeilen.length
     ? zeilen.join("")
     : `<div class="kontakt-nur-name">Nur der Name ist freigegeben.</div>`;
+  // Nur eine Anschrift freigegeben? Dann gibt es nichts zu tippen und die Reihe
+  // entfällt ganz, statt als leerer Streifen dazustehen.
+  const aktionen = knoepfe.length
+    ? `<div class="kontakt-aktionen">${knoepfe.join("")}</div>`
+    : "";
   return `
     <div class="kontakt-karte">
       <div class="kontakt-name">${escapeHtml(vollerName(k))}</div>
       ${inhalt}
+      ${aktionen}
     </div>`;
 }
 

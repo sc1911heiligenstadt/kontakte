@@ -194,15 +194,23 @@ button.btn:disabled { opacity: 0.6; cursor: default; }
 .kontakt-zeile .kz-adresse-text { line-height: 1.4; }
 
 /* ---------- Aktions-Knöpfe (Anrufen / WhatsApp / Mail) ----------
-   Die Zeile darf umbrechen: bei einer langen E-Mail-Adresse rutscht die Knopfgruppe
-   am Handy unter den Wert, statt die Karte seitlich aufzuziehen. `min-width: 0` am
-   Wert ist dafür Pflicht — ohne das behält er seine Wunschbreite und der Umbruch
-   greift nicht. */
-.kontakt-zeile { flex-wrap: wrap; }
-.kontakt-zeile .kz-wert { min-width: 0; flex: 1 1 auto; }
-/* `margin-left: auto` schiebt die Gruppe ans rechte Ende der Zeile — solange sie
-   dort Platz hat; nach dem Umbruch steht sie links unter dem Wert. */
-.kontakt-aktionen { display: flex; gap: 6px; flex: none; margin-left: auto; }
+   ⚠️ Die Knöpfe stehen GESAMMELT unter den Angaben, nicht je Zeile rechts daneben.
+   Der erste Entwurf hatte sie in der Zeile mit `margin-left: auto`: bei einer
+   kurzen Nummer standen sie daneben, bei einer langen E-Mail-Adresse brachen sie
+   in eine eigene Zeile um und klebten dort rechts — nebeneinander im Raster sah
+   jede Karte anders aus. Gesammelt unten hat jede Karte denselben Aufbau,
+   unabhängig von der Textlänge.
+   `min-width: 0` am Wert bleibt Pflicht, damit eine lange Adresse umbricht statt
+   die Karte seitlich aufzuziehen. */
+.kontakt-zeile .kz-wert { min-width: 0; }
+.kontakt-aktionen {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
 
 .kontakt-aktion {
   display: inline-flex;

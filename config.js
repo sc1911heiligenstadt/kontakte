@@ -11,6 +11,19 @@ const FREIGABE_URL = "https://sc1911heiligenstadt.github.io/ToolsUebersicht/";
 
 const APP_CHANGELOG = [
   {
+    version: "1.2",
+    groups: [
+      {
+        title: "Ruhigere Karten",
+        items: [
+          "Die Knöpfe stehen jetzt gesammelt unten in der Karte statt neben jeder Zeile. Damit sieht jede Karte gleich aus — vorher rutschten sie bei einer langen E-Mail-Adresse in eine eigene Zeile und jede Karte war anders aufgebaut.",
+          "Nummer und Adresse selbst bleiben weiterhin direkt antippbar.",
+          "Wer nur seine Anschrift freigegeben hat, bekommt gar keine Knöpfe mehr — dort gibt es nichts zu tippen."
+        ]
+      }
+    ]
+  },
+  {
     version: "1.1",
     groups: [
       {
