@@ -203,7 +203,7 @@ function renderListe() {
     // nicht (siehe [[feedback-repeated-question-signals-missing-path]]).
     empty.innerHTML = alleKontakte.length === 0
       ? `Noch hat niemand Angaben freigegeben.<br /><br />
-         <a class="btn small" href="${escapeHtml(TRAINERDATEN_URL)}">Eigene Angaben in Trainerdaten freigeben</a>`
+         <a class="btn small" href="${escapeHtml(FREIGABE_URL)}">Eigene Angaben freigeben</a>`
       : "Kein Eintrag passt zu dieser Suche.";
     return;
   }
@@ -228,7 +228,7 @@ async function init() {
   document.getElementById("version-badge-2").textContent = "v" + APP_VERSION;
   renderChangelog();
   setupTabs();
-  document.getElementById("link-trainerdaten").href = TRAINERDATEN_URL;
+  document.getElementById("link-freigabe").href = FREIGABE_URL;
   document.getElementById("filter-suche").addEventListener("input", (e) => {
     suche = e.target.value;
     renderListe();

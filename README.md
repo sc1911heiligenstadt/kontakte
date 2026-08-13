@@ -9,10 +9,11 @@ jede Person das selbst freigegeben hat.
 ## Wie eine Angabe hierher kommt
 
 Die Daten liegen in [Trainerdaten](https://sc1911heiligenstadt.github.io/Trainerdaten/)
-und werden nicht doppelt gepflegt. Dort gibt jede Person unter „Meine Daten“ im
-Bereich **Kontaktliste des Vereins** einzeln frei, was erscheinen darf: Name,
-Telefonnummer, E-Mail-Adresse, Anschrift. Ohne Freigabe steht nichts hier, und
-ein entferntes Häkchen wirkt sofort.
+und werden nicht doppelt gepflegt. **Freigegeben** wird in der
+[Tools-Übersicht](https://sc1911heiligenstadt.github.io/ToolsUebersicht/) im Tab
+**„Mein Konto“**, Karte *Kontaktliste des Vereins*: dort gibt jede Person einzeln
+frei, was erscheinen darf — Name, Telefonnummer, E-Mail-Adresse, Anschrift. Ohne
+Freigabe steht nichts hier, und ein entferntes Häkchen wirkt sofort.
 
 ## Technik
 
