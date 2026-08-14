@@ -15,7 +15,7 @@
 
 param([string]$Ziel = "")
 $ErrorActionPreference = 'Stop'
-. "C:\Users\Michel Brunner\.claude\skills\meine-anleitungsbilder\scripts\anleitung-lib.ps1"
+. (Join-Path $env:USERPROFILE ".claude\skills\meine-anleitungsbilder\scripts\anleitung-lib.ps1")
 
 $Ziel = ZielPruefen $Ziel
 SchriftenLaden
@@ -68,7 +68,7 @@ $r = NeueSeite; $bmp = $r[0]; $g = $r[1]
 $y = Kopf $g 3 "Aussuchen, was zu sehen ist" "Jede Angabe einzeln — nichts ist vorgegeben."
 
 $eintraege = @(
-  "Telefonnummer zeigen   ·  0177 8587294",
+  "Telefonnummer zeigen   ·  0171 2345678",
   "E-Mail-Adresse zeigen   ·  vorname.name@beispiel.de",
   "Anschrift zeigen   ·  Musterweg 1, 37308 Heilbad Heiligenstadt")
 $karte = Karte $g $y (96 + $eintraege.Count * 52)

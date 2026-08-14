@@ -35,7 +35,8 @@ function telHref(nummer) {
 }
 
 // WhatsApp verlangt in `wa.me/<nummer>` das internationale Format OHNE Plus und
-// OHNE führende Null — aus "0177 8587294" muss "491778587294" werden. Liefert ""
+// OHNE führende Null — aus "0171 2345678" (erfundenes Beispiel) muss
+// "491712345678" werden. Liefert ""
 // wenn sich das nicht sicher ableiten lässt.
 //
 // ⚠️ `LAND_VORWAHL` ist die Annahme „eine Nummer ohne Ländervorwahl ist deutsch".
