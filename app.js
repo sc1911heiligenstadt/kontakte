@@ -15,6 +15,12 @@ let currentNachname = null;
 let alleKontakte = [];   // roher kontakte[]-Array aus fetchKontakte()
 let suche = "";
 
+// Mannschaftsansicht. Wird beim ERSTEN Öffnen des Tabs geladen, nicht beim
+// Seitenstart: wer nur eine Nummer nachschlagen will, soll dafür nicht auf
+// einen zweiten Abruf warten (der Worker liest dort zwei Dateien statt einer).
+let mannschaftenState = null;
+let mannschaftenLaeuft = false;
+
 function escapeHtml(s) {
   return String(s || "").replace(/[&<>"']/g, (c) => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
@@ -111,7 +117,14 @@ function activateTab(name) {
 
 function setupTabs() {
   document.querySelectorAll("nav button[data-tab]").forEach((b) => {
-    b.addEventListener("click", () => activateTab(b.dataset.tab));
+    b.addEventListener("click", () => {
+      activateTab(b.dataset.tab);
+      // Erst beim Öffnen holen, und nur einmal. Ein zweiter Abruf bei jedem
+      // Tabwechsel wäre bei einer Liste, die sich selten ändert, verschwendet.
+      if (b.dataset.tab === "mannschaften" && !mannschaftenState && !mannschaftenLaeuft) {
+        mannschaftenLaden();
+      }
+    });
   });
 }
 
@@ -198,6 +211,144 @@ function karteHtml(k) {
     </div>`;
 }
 
+// ---------- Mannschaftsübersicht ----------
+
+// Eine Person in einer Mannschaft. Name und Rolle stehen immer da, Telefon und
+// E-Mail nur, wenn sie ankommen.
+//
+// ⚠️ Bewusst KEIN Hinweis wie „nicht freigegeben“ an der einzelnen Person. Die
+// Freigabe ist eine Einwilligung, und eine Oberfläche, die bei jedem Namen
+// vermerkt, dass er sie nicht erteilt hat, macht Druck — dieselbe Überlegung,
+// aus der das Freigabe-Badge in Trainerdaten nie ein rotes „offen“ zeigt. Der
+// erklärende Satz steht dafür einmal über der Liste.
+function personHtml(p) {
+  const werte = [];
+  const knoepfe = [];
+  if (p.telefon) {
+    werte.push(`<span class="mt-wert">📞 <a href="tel:${escapeHtml(telHref(p.telefon))}">${escapeHtml(p.telefon)}</a></span>`);
+    knoepfe.push(aktionsKnopf("tel:" + telHref(p.telefon), "ka-anruf", "📞", "Anrufen", "Anrufen: " + p.telefon, false));
+    const wa = waHref(p.telefon);
+    if (wa) knoepfe.push(aktionsKnopf(wa, "ka-wa", "💬", "WhatsApp", "WhatsApp-Nachricht an " + p.telefon, true));
+  }
+  if (p.email) {
+    werte.push(`<span class="mt-wert">✉️ <a href="mailto:${escapeHtml(p.email)}">${escapeHtml(p.email)}</a></span>`);
+    knoepfe.push(aktionsKnopf("mailto:" + p.email, "ka-mail", "✉️", "Mail", "E-Mail schreiben an " + p.email, false));
+  }
+  return `
+    <div class="mt-person">
+      <div class="mt-person-kopf">
+        <span class="mt-person-name">${escapeHtml(p.name || "")}</span>
+        <span class="mt-rolle">${escapeHtml(p.rolleLabel || "Trainer")}</span>
+      </div>
+      ${werte.length ? `<div class="mt-werte">${werte.join("")}</div>` : ""}
+      ${knoepfe.length ? `<div class="kontakt-aktionen">${knoepfe.join("")}</div>` : ""}
+    </div>`;
+}
+
+function teamHtml(t) {
+  const meta = [t.liga, t.jahrgaenge ? "Jahrgänge " + t.jahrgaenge : ""].filter(Boolean);
+  // Eine Mannschaft ohne Betreuer bleibt sichtbar: die Lücke ist fast immer ein
+  // Pflegefehler in der Mannschaftsliste, und weggelassen fände sie niemand.
+  const inhalt = t.personen && t.personen.length
+    ? t.personen.map(personHtml).join("")
+    : `<div class="mt-leer">Noch niemand eingetragen.</div>`;
+  return `
+    <div class="mt-team">
+      <div class="mt-team-kopf">
+        <span class="mt-kurz">${escapeHtml(t.kurz || "")}</span>
+        <span class="mt-lang">${escapeHtml(t.lang || "")}</span>
+      </div>
+      ${meta.length ? `<div class="mt-meta">${meta.map(escapeHtml).join(" · ")}</div>` : ""}
+      ${inhalt}
+    </div>`;
+}
+
+function renderMannschaftenSaison() {
+  const sel = document.getElementById("mt-saison");
+  if (!sel || !mannschaftenState) return;
+  const saisons = mannschaftenState.saisons || [];
+  // Nur eine einzige Saison? Dann wäre ein Auswahlfeld mit genau einem Eintrag
+  // ein Bedienelement, das nichts kann.
+  sel.parentElement.style.display = saisons.length > 1 ? "" : "none";
+  sel.innerHTML = saisons.map((s) =>
+    `<option value="${escapeHtml(s)}"${s === mannschaftenState.saison ? " selected" : ""}>${escapeHtml(s)}</option>`
+  ).join("");
+}
+
+function renderMannschaften() {
+  const rows = document.getElementById("mt-rows");
+  const empty = document.getElementById("mt-empty");
+  const kopf = document.getElementById("mt-druckkopf");
+  if (!rows) return;
+
+  if (mannschaftenLaeuft) {
+    rows.innerHTML = "";
+    empty.style.display = "";
+    empty.textContent = "Wird geladen …";
+    return;
+  }
+  if (!mannschaftenState) return;
+
+  const teams = mannschaftenState.teams || [];
+  if (kopf) {
+    kopf.textContent = "1. SC 1911 Heiligenstadt e.V. — Mannschaften" +
+      (mannschaftenState.saison ? " " + mannschaftenState.saison : "");
+  }
+  renderMannschaftenSaison();
+
+  if (!teams.length) {
+    rows.innerHTML = "";
+    empty.style.display = "";
+    empty.textContent = "Für diese Saison ist keine Mannschaft eingetragen.";
+    return;
+  }
+  empty.style.display = "none";
+  rows.innerHTML = teams.map(teamHtml).join("");
+}
+
+async function mannschaftenLaden(saison) {
+  mannschaftenLaeuft = true;
+  renderMannschaften();
+  try {
+    mannschaftenState = await fetchMannschaften(saison);
+  } catch (e) {
+    mannschaftenState = null;
+    const empty = document.getElementById("mt-empty");
+    const rows = document.getElementById("mt-rows");
+    if (rows) rows.innerHTML = "";
+    if (empty) {
+      empty.style.display = "";
+      empty.textContent = "Die Mannschaften konnten nicht geladen werden: " + e.message;
+    }
+    mannschaftenLaeuft = false;
+    return;
+  }
+  mannschaftenLaeuft = false;
+  renderMannschaften();
+}
+
+// Drucken über eine Klasse am <body> statt über ein reines @media print:
+// so wirkt das Druck-Layout NUR auf diesen Knopf. Ein Strg+P im Kontakte-Tab
+// druckt weiter genau das, was es bisher gedruckt hat — ein Nebeneffekt dort
+// wäre eine Änderung, die niemand bestellt hat.
+//
+// ⚠️ Auf dem Blatt stehen KEINE Telefonnummern und E-Mail-Adressen (siehe
+// style.css). Ein Ausdruck wandert ans Schwarze Brett oder in fremde Hände;
+// freigegeben wurden die Angaben für die interne Liste, nicht für den
+// Schaukasten.
+function mannschaftenDrucken() {
+  document.body.classList.add("drucken-mannschaften");
+  const aufraeumen = function () {
+    document.body.classList.remove("drucken-mannschaften");
+    window.removeEventListener("afterprint", aufraeumen);
+  };
+  window.addEventListener("afterprint", aufraeumen);
+  window.print();
+  // Safari auf älteren Geräten feuert `afterprint` nicht zuverlässig — ohne
+  // dieses Netz bliebe die Seite danach im Druck-Layout stehen.
+  setTimeout(aufraeumen, 3000);
+}
+
 function renderListe() {
   const rows = document.getElementById("liste-rows");
   const empty = document.getElementById("liste-empty");
@@ -246,6 +397,10 @@ async function init() {
     suche = e.target.value;
     renderListe();
   });
+  document.getElementById("mt-saison").addEventListener("change", (e) => {
+    mannschaftenLaden(e.target.value);
+  });
+  document.getElementById("mt-drucken").addEventListener("click", mannschaftenDrucken);
 
   if (!getSessionToken()) {
     showConnectScreen();

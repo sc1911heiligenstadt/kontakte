@@ -11,6 +11,23 @@ const FREIGABE_URL = "https://sc1911heiligenstadt.github.io/ToolsUebersicht/";
 
 const APP_CHANGELOG = [
   {
+    version: "1.3",
+    groups: [
+      {
+        title: "Neu: die Übersicht nach Mannschaften",
+        items: [
+          "Der neue Tab „Mannschaften“ zeigt, wer welche Mannschaft betreut — von der Ersten bis zu den Bambini, in der Reihenfolge, in der die Mannschaften auch sonst überall stehen.",
+          "Zu jeder Mannschaft stehen Liga und Jahrgang dabei. Den Jahrgang rechnet das Werkzeug selbst aus Saison und Altersstufe aus: Bei den A-Junioren sind das in der Saison 2026/27 die Jahrgänge 2008 und 2009. Niemand muss das jede Saison neu eintragen.",
+          "Wer eine Mannschaft betreut, steht hier immer mit Namen und Rolle — das gehört zur Vereinsorganisation und steht ohnehin an jedem Aushang. Telefonnummer und E-Mail-Adresse stehen weiterhin nur bei den Personen, die sie freigegeben haben.",
+          "Die Anschrift wird in dieser Ansicht nie gezeigt, auch wenn sie freigegeben ist: Um den Trainer der D2 zu erreichen, genügen Nummer und E-Mail.",
+          "Eine Mannschaft, bei der noch niemand eingetragen ist, bleibt in der Liste stehen und sagt das offen. So fällt auf, wenn in der Mannschaftsliste etwas fehlt.",
+          "Gab es die Mannschaften schon in früheren Saisons, lässt sich oben zwischen den Saisons umschalten.",
+          "Der Knopf „Drucken“ macht daraus ein Blatt fürs Schwarze Brett — mit Mannschaft, Liga, Jahrgang und den Namen, aber ohne Telefonnummern und E-Mail-Adressen. Freigegeben wurden die Angaben für die interne Liste, nicht für den Schaukasten."
+        ]
+      }
+    ]
+  },
+  {
     version: "1.2",
     groups: [
       {

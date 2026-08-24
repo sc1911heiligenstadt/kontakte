@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>📇 Kontakte</title>
 <meta name="theme-color" content="#1a56a0" />
-<link rel="stylesheet" href="style.css?v=1.3" />
+<link rel="stylesheet" href="style.css?v=1.4" />
 </head>
 <body>
 
@@ -38,6 +38,7 @@
 <div id="app-shell" style="display:none;">
   <nav>
     <button data-tab="liste" class="active" type="button">Kontakte</button>
+    <button data-tab="mannschaften" type="button">Mannschaften</button>
     <button data-tab="info" style="margin-left:auto;" type="button">Info</button>
   </nav>
   <main>
@@ -57,6 +58,36 @@
         <input type="text" id="filter-suche" class="search-input" placeholder="Name, Ort oder Nummer suchen…" />
         <div class="empty-state" id="liste-empty" style="display:none;"></div>
         <div class="kontakt-grid" id="liste-rows"></div>
+      </div>
+
+    </section>
+
+    <!-- ---------- Mannschaften ---------- -->
+    <section class="tab-section" id="tab-mannschaften">
+
+      <div class="card">
+        <!-- Steht nur auf dem Ausdruck, nie am Bildschirm (style.css). -->
+        <div id="mt-druckkopf" class="mt-druckkopf"></div>
+
+        <div class="card-header-row">
+          <h2>Wer betreut welche Mannschaft</h2>
+          <div class="mt-steuerung">
+            <label class="mt-saison-feld">Saison
+              <select id="mt-saison"></select>
+            </label>
+            <button class="btn small secondary" id="mt-drucken" type="button">🖨️ Drucken</button>
+          </div>
+        </div>
+
+        <p class="muted mt-hinweis" style="margin-bottom:14px; line-height:1.5;">
+          Wer eine Mannschaft betreut, steht hier mit Namen — das gehört zur Vereinsorganisation.
+          Telefonnummer und E-Mail-Adresse stehen nur bei den Personen, die sie freigegeben haben;
+          die Anschrift wird hier nie angezeigt. Der Ausdruck kommt ganz ohne Kontaktdaten aus,
+          damit er auch ans Schwarze Brett kann.
+        </p>
+
+        <div class="empty-state" id="mt-empty" style="display:none;"></div>
+        <div class="mt-liste" id="mt-rows"></div>
       </div>
 
     </section>
@@ -105,8 +136,8 @@
   </main>
 </div>
 
-<script src="config.js?v=1.3"></script>
-<script src="db.js?v=1.0"></script>
-<script src="app.js?v=1.4"></script>
+<script src="config.js?v=1.4"></script>
+<script src="db.js?v=1.1"></script>
+<script src="app.js?v=1.5"></script>
 </body>
 </html>

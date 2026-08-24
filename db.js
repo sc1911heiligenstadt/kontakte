@@ -47,3 +47,20 @@ async function fetchMe() {
 async function fetchKontakte() {
   return gatewayRequest({ action: "kontakte-liste" });
 }
+
+// Liefert { saison, saisons[], teams: [{kurz, lang, liga, stufe, jahrgaenge,
+//           personen: [{name, rolle, rolleLabel, telefon?, email?}]}] }.
+//
+// Dieselbe Freigabe wie fetchKontakte, nur nach Mannschaften sortiert — und
+// dieselbe Regel: gefiltert wird im Worker. Ein Unterschied zur Namensliste ist
+// gewollt: NAME und ROLLE kommen aus der Mannschaftsliste des Gateways und
+// stehen deshalb auch bei Personen ohne jede Freigabe da (wer eine Mannschaft
+// betreut, ist Vereinsorganisation). TELEFON und E-MAIL kommen weiterhin nur
+// bei Freigabe, die ANSCHRIFT gar nicht.
+//
+// Ohne `saison` antwortet der Worker mit der laufenden.
+async function fetchMannschaften(saison) {
+  const payload = { action: "kontakte-mannschaften" };
+  if (saison) payload.saison = saison;
+  return gatewayRequest(payload);
+}
