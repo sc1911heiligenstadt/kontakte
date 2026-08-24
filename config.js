@@ -11,6 +11,19 @@ const FREIGABE_URL = "https://sc1911heiligenstadt.github.io/ToolsUebersicht/";
 
 const APP_CHANGELOG = [
   {
+    version: "1.4",
+    groups: [
+      {
+        title: "Suchfeld in der Mannschaftsübersicht",
+        items: [
+          "Über der Liste steht jetzt ein Suchfeld. Es findet Mannschaften („D2“, „Bambini“), Ligen, Jahrgänge, Namen und Rollen — und auch die freigegebenen Nummern und E-Mail-Adressen, damit sich ein Anrufer nachschlagen lässt.",
+          "Wird nach einer Mannschaft gesucht, bleibt sie vollständig stehen — mit allen, die sie betreuen. Wird nach einem Namen gesucht, erscheinen die Mannschaften dieser Person, und darin nur sie: Wer „Grimm“ eingibt, will sehen, wo Grimm steht, nicht die Kollegen dazu.",
+          "Der Knopf „Drucken“ druckt, was zu sehen ist. Wer erst nach „D“ sucht, bekommt ein Blatt nur mit den D-Mannschaften. Der Suchbegriff steht dann oben mit drauf, damit ein Blatt mit wenigen Mannschaften nicht wie die vollständige Liste aussieht."
+        ]
+      }
+    ]
+  },
+  {
     version: "1.3",
     groups: [
       {

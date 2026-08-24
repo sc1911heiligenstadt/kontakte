@@ -338,6 +338,7 @@ button.btn:disabled { opacity: 0.6; cursor: default; }
   body.drucken-mannschaften .tab-section:not(#tab-mannschaften),
   body.drucken-mannschaften .mt-steuerung,
   body.drucken-mannschaften .mt-hinweis,
+  body.drucken-mannschaften #mt-suche,
   body.drucken-mannschaften .card-header-row h2,
   body.drucken-mannschaften .mt-werte,
   body.drucken-mannschaften .kontakt-aktionen { display: none !important; }

@@ -20,6 +20,7 @@ let suche = "";
 // einen zweiten Abruf warten (der Worker liest dort zwei Dateien statt einer).
 let mannschaftenState = null;
 let mannschaftenLaeuft = false;
+let mannschaftenSuche = "";
 
 function escapeHtml(s) {
   return String(s || "").replace(/[&<>"']/g, (c) => ({
@@ -263,6 +264,34 @@ function teamHtml(t) {
     </div>`;
 }
 
+// Sucht über alles, was in der Ansicht steht: Mannschaft, Liga, Jahrgang,
+// Namen, Rollen — und die freigegebenen Nummern und Adressen, damit sich auch
+// ein Anrufer nachschlagen lässt (gleiche Linie wie `gefiltert()` nebenan).
+//
+// ⚠️ Zwei verschiedene Treffer, bewusst mit verschiedener Wirkung:
+//   Passt die MANNSCHAFT selbst („D2", „Verbandsliga", „2014"), bleibt sie
+//   vollständig stehen — wer nach einer Mannschaft sucht, will das ganze Team.
+//   Passt nur eine PERSON („Grimm"), erscheint die Mannschaft mit genau dieser
+//   Person — wer einen Namen sucht, will sehen, wo er steht, nicht die
+//   Kollegenliste dazu.
+function gefilterteTeams() {
+  const q = mannschaftenSuche.trim().toLowerCase();
+  const teams = (mannschaftenState && mannschaftenState.teams) || [];
+  if (!q) return teams;
+  return teams.map((t) => {
+    const teamText = [t.kurz, t.lang, t.liga, t.jahrgaenge]
+      .filter(Boolean).join(" ").toLowerCase();
+    if (teamText.includes(q)) return t;
+    const personen = (t.personen || []).filter((p) =>
+      [p.name, p.rolleLabel, p.telefon, p.email]
+        .filter(Boolean).join(" ").toLowerCase().includes(q));
+    // Kein Treffer in der Mannschaft: sie fällt ganz weg. Sie mit leerer
+    // Personenliste stehen zu lassen hieße „Noch niemand eingetragen" — und das
+    // wäre eine Falschaussage über die Mannschaft statt über die Suche.
+    return personen.length ? Object.assign({}, t, { personen: personen }) : null;
+  }).filter(Boolean);
+}
+
 function renderMannschaftenSaison() {
   const sel = document.getElementById("mt-saison");
   if (!sel || !mannschaftenState) return;
@@ -289,17 +318,28 @@ function renderMannschaften() {
   }
   if (!mannschaftenState) return;
 
-  const teams = mannschaftenState.teams || [];
+  const alle = mannschaftenState.teams || [];
+  const teams = gefilterteTeams();
   if (kopf) {
+    // Auf dem Ausdruck steht, was auch am Bildschirm steht: wer nach „D" sucht
+    // und dann druckt, will das Blatt der D-Mannschaften. Der Suchbegriff steht
+    // deshalb mit im Kopf — sonst sieht ein unvollständiges Blatt aus wie die
+    // ganze Liste.
     kopf.textContent = "1. SC 1911 Heiligenstadt e.V. — Mannschaften" +
-      (mannschaftenState.saison ? " " + mannschaftenState.saison : "");
+      (mannschaftenState.saison ? " " + mannschaftenState.saison : "") +
+      (mannschaftenSuche.trim() ? " · Suche: " + mannschaftenSuche.trim() : "");
   }
   renderMannschaftenSaison();
 
   if (!teams.length) {
     rows.innerHTML = "";
     empty.style.display = "";
-    empty.textContent = "Für diese Saison ist keine Mannschaft eingetragen.";
+    // Zwei Leerzustände, die man nicht verwechseln darf (gleiche Überlegung wie
+    // bei der Namensliste): „keine Mannschaft eingetragen" ist ein Zustand der
+    // Daten, „kein Treffer" einer der Suche.
+    empty.textContent = alle.length
+      ? "Keine Mannschaft und keine Person passt zu dieser Suche."
+      : "Für diese Saison ist keine Mannschaft eingetragen.";
     return;
   }
   empty.style.display = "none";
@@ -401,6 +441,10 @@ async function init() {
     mannschaftenLaden(e.target.value);
   });
   document.getElementById("mt-drucken").addEventListener("click", mannschaftenDrucken);
+  document.getElementById("mt-suche").addEventListener("input", (e) => {
+    mannschaftenSuche = e.target.value;
+    renderMannschaften();
+  });
 
   if (!getSessionToken()) {
     showConnectScreen();
