@@ -271,7 +271,7 @@ function teamHtml(t) {
 // ⚠️ Zwei verschiedene Treffer, bewusst mit verschiedener Wirkung:
 //   Passt die MANNSCHAFT selbst („D2", „Verbandsliga", „2014"), bleibt sie
 //   vollständig stehen — wer nach einer Mannschaft sucht, will das ganze Team.
-//   Passt nur eine PERSON („Grimm"), erscheint die Mannschaft mit genau dieser
+//   Passt nur eine PERSON („Mustermann"), erscheint die Mannschaft mit genau dieser
 //   Person — wer einen Namen sucht, will sehen, wo er steht, nicht die
 //   Kollegenliste dazu.
 function gefilterteTeams() {
