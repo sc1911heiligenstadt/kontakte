@@ -11,6 +11,17 @@ const FREIGABE_URL = "https://sc1911heiligenstadt.github.io/ToolsUebersicht/";
 
 const APP_CHANGELOG = [
   {
+    version: "1.5",
+    groups: [
+      {
+        title: "Die Kontaktliste ist schneller da",
+        items: [
+          "Beim Öffnen wurde erst das eigene Konto abgefragt und danach die Kontaktliste. Die zweite Abfrage wartet auf die erste nicht — jetzt laufen beide gemeinsam los."
+        ]
+      }
+    ]
+  },
+  {
     version: "1.4",
     groups: [
       {

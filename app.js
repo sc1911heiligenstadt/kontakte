@@ -451,13 +451,21 @@ async function init() {
     return;
   }
 
+  // ⚠️ Bis 2026-08-28 liefen me und die Kontaktliste NACHEINANDER, obwohl keiner
+  // das Ergebnis des anderen braucht -- ein voller Roundtrip (~180 ms) zu viel.
+  // Jetzt gemeinsam angestossen, ausgewertet in der bisherigen Reihenfolge.
+  const meP = fetchMe();
+  meP.catch(() => {}); // Platzhalter gegen unhandled rejection, falls das erste await wirft
+  const kontakteP = fetchKontakte();
+  kontakteP.catch(() => {});
+
   try {
-    const me = await fetchMe();
+    const me = await meP;
     currentUsername = me.username;
     currentIsAdmin = !!me.isAdmin;
     currentVorname = me.vorname || null;
     currentNachname = me.nachname || null;
-    const res = await fetchKontakte();
+    const res = await kontakteP;
     alleKontakte = Array.isArray(res.kontakte) ? res.kontakte : [];
     renderListe();
     showApp();
