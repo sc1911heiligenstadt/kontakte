@@ -11,6 +11,18 @@ const FREIGABE_URL = "https://sc1911heiligenstadt.github.io/ToolsUebersicht/";
 
 const APP_CHANGELOG = [
   {
+    version: "1.6",
+    groups: [
+      {
+        title: "Beim Sitzungsende wird der Bildschirm geräumt",
+        items: [
+          "Lief die Anmeldung ab, während die App offen war, blieb die Kontaktliste mit Namen, Nummern und E-Mail-Adressen im Browser stehen — unsichtbar, im Seitenquelltext aber weiter lesbar. Jetzt wird alles entfernt, auch der eigene Name oben rechts.",
+          "Bisher blieb die App bei einer abgelaufenen Anmeldung einfach offen stehen und meldete den Fehler nur nebenbei. Jetzt führt jeder Weg auf den Anmelde-Hinweis."
+        ]
+      }
+    ]
+  },
+  {
     version: "1.5",
     groups: [
       {
