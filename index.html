@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>📇 Kontakte</title>
+<meta name="theme-color" content="#1a56a0" />
+<link rel="stylesheet" href="style.css?v=1.0" />
+</head>
+<body>
+
+<header>
+  <h1>📇 Kontakte</h1>
+  <a href="https://sc1911heiligenstadt.github.io/ToolsUebersicht/" class="back-to-dashboard">← Zurück zum Dashboard</a>
+  <div class="header-right">
+    <span class="header-user" id="header-user"></span>
+    <img class="header-logo" src="https://sc1911heiligenstadt.github.io/logo.svg" alt="1. SC 1911 Heiligenstadt e.V." />
+  </div>
+</header>
+
+<!-- Verbindungs-Screen -->
+<div class="connect-screen" id="connect-screen">
+  <div class="card">
+    <h2>Anmeldung erforderlich</h2>
+    <p class="muted">
+      Die Kontaktliste ist nur für angemeldete Personen des Vereins zugänglich.
+      Melde dich einmalig in der <strong>Tools-Übersicht</strong> an – danach wird
+      diese Seite automatisch geladen.
+    </p>
+    <div class="btn-row" style="justify-content:flex-start;">
+      <a class="btn" href="https://sc1911heiligenstadt.github.io/ToolsUebersicht/">Zur Tools-Übersicht &amp; anmelden</a>
+    </div>
+    <p class="muted" id="connect-error" style="display:none; color:#c0392b; margin-top:12px;"></p>
+  </div>
+</div>
+
+<!-- App -->
+<div id="app-shell" style="display:none;">
+  <nav>
+    <button data-tab="liste" class="active" type="button">Kontakte</button>
+    <button data-tab="mannschaften" type="button">Mannschaften</button>
+    <button data-tab="info" style="margin-left:auto;" type="button">Info</button>
+  </nav>
+  <main>
+
+    <section class="tab-section active" id="tab-liste">
+
+      <div class="card">
+        <div class="card-header-row">
+          <h2>Kontaktliste des Vereins</h2>
+          <span class="muted" id="kontakt-anzahl"></span>
+        </div>
+        <p class="muted" style="margin-bottom:14px; line-height:1.5;">
+          Hier steht nur, was jede Person selbst freigegeben hat. Deine eigenen Angaben gibst du in der
+          <a href="https://sc1911heiligenstadt.github.io/ToolsUebersicht/" id="link-freigabe">Tools-Übersicht</a>
+          im Tab „Mein Konto“ frei — einzeln je Angabe und jederzeit widerrufbar.
+        </p>
+        <input type="text" id="filter-suche" class="search-input" placeholder="Name, Ort oder Nummer suchen…" />
+        <div class="empty-state" id="liste-empty" style="display:none;"></div>
+        <div class="kontakt-grid" id="liste-rows"></div>
+      </div>
+
+    </section>
+
+    <!-- ---------- Mannschaften ---------- -->
+    <section class="tab-section" id="tab-mannschaften">
+
+      <div class="card">
+        <!-- Steht nur auf dem Ausdruck, nie am Bildschirm (style.css). -->
+        <div id="mt-druckkopf" class="mt-druckkopf"></div>
+
+        <div class="card-header-row">
+          <h2>Wer betreut welche Mannschaft</h2>
+          <div class="mt-steuerung">
+            <label class="mt-saison-feld">Saison
+              <select id="mt-saison"></select>
+            </label>
+            <button class="btn small secondary" id="mt-drucken" type="button">🖨️ Drucken</button>
+          </div>
+        </div>
+
+        <p class="muted mt-hinweis" style="margin-bottom:14px; line-height:1.5;">
+          Wer eine Mannschaft betreut, steht hier mit Namen — das gehört zur Vereinsorganisation.
+          Telefonnummer und E-Mail-Adresse stehen nur bei den Personen, die sie freigegeben haben;
+          die Anschrift wird hier nie angezeigt. Der Ausdruck kommt ganz ohne Kontaktdaten aus,
+          damit er auch ans Schwarze Brett kann.
+        </p>
+
+        <input type="text" id="mt-suche" class="search-input"
+               placeholder="Name, Mannschaft, Liga, Jahrgang oder Rolle suchen…" />
+        <div class="empty-state" id="mt-empty" style="display:none;"></div>
+        <div class="mt-liste" id="mt-rows"></div>
+      </div>
+
+    </section>
+
+    <!-- ---------- Info ---------- -->
+    <section class="tab-section" id="tab-info">
+      <div class="card">
+        <h2>Über die Kontakte <span class="version-badge" id="version-badge-2"></span></h2>
+        <p class="muted">
+            Das Telefonbuch des Vereins — freiwillig befüllt, jederzeit widerrufbar.
+            Gepflegt werden die Angaben in den Trainerdaten, freigegeben in der Tools-Übersicht
+            unter „Mein Konto“: dort entscheidet jede Person einzeln, ob Name, Telefonnummer,
+            E-Mail-Adresse und Anschrift hier erscheinen dürfen. Ohne Freigabe steht nichts da, und
+            ein entferntes Häkchen wirkt sofort. Der Reiter „Mannschaften“ zeigt, wer welche
+            Mannschaft betreut — zum Ausdrucken auch ohne Kontaktdaten.
+          </p>
+      </div>
+      <div class="card">
+        <h2>Änderungen</h2>
+        <div id="changelog-list"></div>
+      </div>
+
+      <div class="card" id="ds-info-karte">
+        <h2>Datenschutz</h2>
+        <p>Dieses Werkzeug gehört zu den internen Anwendungen des
+        1. SC 1911 Heiligenstadt. Die hier erfassten Daten werden
+        ausschließlich für die Vereinsarbeit verwendet und liegen auf Servern
+        in Deutschland, die ein Auftragsverarbeiter für den Verein betreibt.
+        Eine Weitergabe an Dritte findet nur statt, soweit sie für den
+        jeweiligen Zweck erforderlich oder gesetzlich vorgeschrieben ist.</p>
+        <p>Die Angaben in dieser Liste beruhen auf der freiwilligen Einwilligung
+        der jeweiligen Person (Art. 6 Abs. 1 Buchstabe a DSGVO). Erteilt und
+        widerrufen wird sie in der
+        <a href="https://sc1911heiligenstadt.github.io/ToolsUebersicht/">Tools-Übersicht</a>
+        im Tab „Mein Konto“, getrennt für Name, Telefonnummer, E-Mail-Adresse und
+        Anschrift. Ein Widerruf wirkt sofort für die Zukunft; die Angabe
+        verschwindet dann aus dieser Liste. Wer nichts freigibt, erscheint hier
+        gar nicht — daraus entsteht kein Nachteil.</p>
+        <p>Verantwortlich ist der 1. SC 1911 Heiligenstadt, Leineberg 2,
+        37308 Heilbad Heiligenstadt, Telefon 03606 612206,
+        <a href="mailto:info@sc1911-heiligenstadt.de">info@sc1911-heiligenstadt.de</a>.
+        Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung,
+        Datenübertragbarkeit und Widerspruch lassen sich unter dieser
+        Anschrift geltend machen. Beschwerden nimmt der Thüringer
+        Landesbeauftragte für den Datenschutz und die Informationsfreiheit
+        entgegen.</p>
+        <p><a href="https://www.sc1911-heiligenstadt.de/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung des Vereins</a>
+        &middot;
+        <a href="https://www.sc1911-heiligenstadt.de/impressum-2/" target="_blank" rel="noopener">Impressum</a></p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="config.js?v=1.0"></script>
+<script src="db.js?v=1.0"></script>
+<script src="app.js?v=1.0"></script>
+</body>
+</html>

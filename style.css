@@ -1,0 +1,380 @@
+/* Basis 1:1 aus der Flotte übernommen (Vorlage E:\personalakte\style.css) — Farben,
+   Kopfzeile, Navigation, Karten, Knöpfe, Changelog und Zurück-Knopf sind flottenweit
+   gleich und werden bewusst KOPIERT statt geteilt (die Repos sind eigenständig).
+   Wer hier eine dieser Regeln ändert, ändert nur diese App. */
+:root {
+  --green: #2d8c4e;
+  --green-light: #e8f5ed;
+  --red: #c0392b;
+  --red-light: #fdecea;
+  --blue: #1a56a0;
+  --blue-light: #e8f0fb;
+  --gold: #c9941f;
+  --gold-light: #fbf2e1;
+  --gray: #f4f5f7;
+  --border: #dde1e8;
+  --text: #1e2330;
+  --muted: #6b7280;
+  --white: #ffffff;
+  --shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  --radius: 12px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Segoe UI", system-ui, sans-serif;
+  background: #eef1f6;
+  color: var(--text);
+  min-height: 100vh;
+}
+header {
+  background: var(--blue);
+  color: white;
+  padding: 16px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  flex-wrap: wrap;
+}
+header h1 { font-size: 20px; font-weight: 600; display: flex; align-items: center; gap: 8px; flex: 1 1 200px; }
+.header-right { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; flex: 1 1 200px; justify-content: flex-end; }
+.header-logo { height: 44px; width: auto; display: block; }
+.header-user { font-size: 13px; opacity: 0.95; display: flex; align-items: center; gap: 6px; }
+
+nav {
+  display: flex;
+  gap: 4px;
+  background: var(--white);
+  padding: 8px 28px 0;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+nav button {
+  background: none;
+  border: none;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  border-radius: 8px 8px 0 0;
+}
+nav button:hover { background: var(--gray); }
+nav button.active { color: var(--blue); border-bottom-color: var(--blue); }
+
+main { max-width: 860px; margin: 0 auto; padding: 24px 16px 60px; }
+.tab-section { display: none; }
+.tab-section.active { display: block; }
+
+.card {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+  margin-bottom: 18px;
+}
+.card h2 { font-size: 17px; margin-bottom: 14px; color: var(--blue); }
+.card h3 { font-size: 15px; margin-bottom: 10px; }
+.card-header-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+.card-header-row h2 { margin-bottom: 0; }
+
+.connect-screen {
+  max-width: 560px;
+  margin: 60px auto;
+  text-align: center;
+}
+.connect-screen .card { padding: 32px; text-align: left; }
+.connect-screen p { color: var(--muted); margin-bottom: 20px; line-height: 1.5; }
+.btn-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+
+button.btn, a.btn {
+  background: var(--blue);
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+button.btn:hover, a.btn:hover { opacity: 0.9; }
+button.btn.secondary, a.btn.secondary { background: var(--gray); color: var(--text); border: 1px solid var(--border); }
+button.btn.small, a.btn.small { padding: 6px 12px; font-size: 13px; }
+button.btn:disabled { opacity: 0.6; cursor: default; }
+
+.muted { color: var(--muted); font-size: 13px; }
+.empty-state { text-align: center; padding: 40px 20px; color: var(--muted); }
+
+.search-input, select {
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+}
+.search-input { width: 100%; margin-bottom: 14px; }
+
+.version-badge {
+  font-size: 11px;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  padding: 2px 9px;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+.card .version-badge { background: var(--blue-light); color: var(--blue); border-color: transparent; }
+
+#changelog-list { display: flex; flex-direction: column; gap: 8px; }
+.changelog-entry { display: flex; flex-direction: column; gap: 10px; font-size: 13px; }
+.changelog-entry .cv { font-weight: 700; color: var(--blue); }
+.changelog-group { display: flex; flex-direction: column; gap: 4px; }
+.changelog-group .cg-title { font-weight: 700; font-size: 14px; color: var(--blue); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 2px; }
+.changelog-group .cg-items { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 3px; color: var(--text); }
+
+.back-to-dashboard {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 8px 16px;
+  border-radius: 999px;
+  white-space: nowrap;
+  flex: 0 0 auto;
+  transition: background 0.15s ease;
+}
+.back-to-dashboard:hover { background: rgba(255, 255, 255, 0.28); text-decoration: none; }
+
+/* ---------- Kontaktkarten ---------- */
+
+/* Raster statt Liste: bei 860 px Inhaltsbreite stehen zwei Karten nebeneinander, am
+   Handy eine. ⚠️ `minmax(0, …)` statt `minmax(260px, …)` in der zweiten Spaltenangabe
+   ist hier nicht nötig, weil `auto-fill` mit fester Mindestbreite arbeitet — dafür
+   trägt die Karte selbst `min-width: 0`, sonst sprengt eine lange E-Mail-Adresse die
+   Spalte (siehe die Grid-Falle in der Flotten-Doku). */
+.kontakt-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+.kontakt-karte {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  background: var(--white);
+  min-width: 0;
+}
+.kontakt-name { font-weight: 700; font-size: 15px; margin-bottom: 8px; }
+
+/* Eine Zeile je freigegebener Angabe. `overflow-wrap: anywhere` fängt lange
+   E-Mail-Adressen und Doppelnamen ab, die sonst seitlich aus der Karte laufen und
+   damit die ganze Seite aufziehen. */
+.kontakt-zeile {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 14px;
+  padding: 3px 0;
+  overflow-wrap: anywhere;
+}
+.kontakt-zeile .kz-symbol { flex: none; width: 18px; text-align: center; }
+.kontakt-zeile a { color: var(--blue); text-decoration: none; }
+.kontakt-zeile a:hover { text-decoration: underline; }
+.kontakt-zeile.kz-adresse { align-items: flex-start; }
+.kontakt-zeile .kz-adresse-text { line-height: 1.4; }
+
+/* ---------- Aktions-Knöpfe (Anrufen / WhatsApp / Mail) ----------
+   ⚠️ Die Knöpfe stehen GESAMMELT unter den Angaben, nicht je Zeile rechts daneben.
+   Der erste Entwurf hatte sie in der Zeile mit `margin-left: auto`: bei einer
+   kurzen Nummer standen sie daneben, bei einer langen E-Mail-Adresse brachen sie
+   in eine eigene Zeile um und klebten dort rechts — nebeneinander im Raster sah
+   jede Karte anders aus. Gesammelt unten hat jede Karte denselben Aufbau,
+   unabhängig von der Textlänge.
+   `min-width: 0` am Wert bleibt Pflicht, damit eine lange Adresse umbricht statt
+   die Karte seitlich aufzuziehen. */
+.kontakt-zeile .kz-wert { min-width: 0; }
+.kontakt-aktionen {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.kontakt-aktion {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  /* ⚠️ 34 px Mindesthöhe, nicht die 29 px von `.btn.small`: das hier wird am Handy
+     mit dem Daumen getroffen, und daneben liegt ein zweiter Knopf. */
+  min-height: 34px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  color: white;
+  text-decoration: none;
+}
+/* ⚠️ Die Regel `.kontakt-zeile a { color: var(--blue) }` darüber ist gleich
+   spezifisch und stünde sonst je nach Reihenfolge gegen die Knopffarbe — deshalb
+   die Farbe hier über den zusammengesetzten Selektor setzen, nicht über !important. */
+.kontakt-zeile .kontakt-aktion { color: white; }
+.kontakt-zeile .kontakt-aktion:hover { text-decoration: none; opacity: 0.88; }
+.kontakt-aktion.ka-anruf { background: var(--blue); }
+/* Grün, damit der Knopf auf den ersten Blick als WhatsApp erkennbar ist — aber
+   deutlich dunkler als die Markenfarbe #25D366.
+   ⚠️ GEMESSEN, nicht geschätzt: #25D366 und auch das erste #1da851 lagen mit
+   3,1:1 unter der WCAG-AA-Schwelle von 4,5:1 für weißen Text dieser Größe
+   (13 px fett zählt NICHT als „großer Text"). #14803d ergibt 5,0:1. Wer hier
+   Richtung Markenfarbe zurückgeht, muss neu nachrechnen. */
+.kontakt-aktion.ka-wa { background: #14803d; }
+.kontakt-aktion.ka-mail { background: var(--muted); }
+
+/* Am Handy zählt jeder Millimeter: dort tragen die Knöpfe nur ihr Symbol.
+   ⚠️ Der Text wird NICHT durch das Symbol ersetzt, sondern nur optisch entfernt —
+   `aria-label` trägt die volle Beschriftung, ein Screenreader liest sie weiter. */
+@media (max-width: 560px) {
+  /* ⚠️ Gemessen 38×34 px, als der Text nur wegfiel — zu klein für zwei
+     nebeneinanderliegende Daumenziele. 44×40 px ist die Fläche, die am Gerät
+     zuverlässig getroffen wird; das Symbol darin bleibt gleich groß. */
+  .kontakt-aktion { padding: 5px 10px; min-width: 44px; min-height: 40px; justify-content: center; font-size: 15px; }
+  .kontakt-aktion .ka-text {
+    position: absolute;
+    width: 1px; height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+}
+
+/* Wer nur seinen Namen freigegeben hat, hätte sonst eine leere Karte — der Satz sagt,
+   dass das Absicht ist und kein Ladefehler. */
+.kontakt-nur-name { font-size: 13px; color: var(--muted); font-style: italic; }
+
+@media (max-width: 560px) {
+  .kontakt-grid { grid-template-columns: 1fr; }
+}
+
+/* ---------- Mannschaftsübersicht ---------- */
+
+.mt-steuerung { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.mt-saison-feld { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); }
+
+.mt-liste { display: flex; flex-direction: column; gap: 12px; }
+
+.mt-team {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  background: var(--white);
+  min-width: 0;
+}
+.mt-team-kopf { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+/* Der Kurzname ist der Schlüssel, unter dem die Mannschaft in der ganzen Flotte
+   auftaucht — deshalb steht er vorn und trägt das Gewicht. */
+.mt-kurz {
+  font-weight: 700;
+  font-size: 15px;
+  background: var(--blue-light);
+  color: var(--blue);
+  border-radius: 6px;
+  padding: 2px 8px;
+  flex: none;
+}
+.mt-lang { font-weight: 600; font-size: 15px; min-width: 0; overflow-wrap: anywhere; }
+.mt-meta { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+.mt-person { padding: 10px 0 2px; border-top: 1px solid var(--border); margin-top: 10px; }
+.mt-person:first-of-type { margin-top: 12px; }
+.mt-person-kopf { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.mt-person-name { font-weight: 600; font-size: 14px; min-width: 0; overflow-wrap: anywhere; }
+.mt-rolle {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  background: var(--gray);
+  border-radius: 999px;
+  padding: 2px 9px;
+  flex: none;
+}
+/* `overflow-wrap: anywhere` wie bei den Kontaktkarten: eine lange E-Mail-Adresse
+   zieht sonst die Karte seitlich auf und mit ihr die ganze Seite. */
+.mt-werte { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 6px; font-size: 14px; }
+.mt-wert { overflow-wrap: anywhere; min-width: 0; }
+.mt-wert a { color: var(--blue); text-decoration: none; }
+.mt-wert a:hover { text-decoration: underline; }
+/* Ohne den engeren Abstand steht unter jeder Person ein Streifen Luft, und bei
+   drei Betreuern je Mannschaft wird die Seite doppelt so lang wie nötig. */
+.mt-person .kontakt-aktionen { margin-top: 8px; padding-top: 8px; }
+.mt-leer { font-size: 13px; color: var(--muted); font-style: italic; margin-top: 10px; }
+
+.mt-druckkopf { display: none; }
+
+/* ---------- Ausdruck der Mannschaftsübersicht ----------
+   Greift NUR über die Klasse, die der Drucken-Knopf setzt (siehe
+   mannschaftenDrucken in app.js). Ein reines @media print würde auch ein Strg+P
+   im Kontakte-Tab umbauen — eine Änderung, die niemand bestellt hat.
+
+   ⚠️ Telefon, E-Mail und die Aktions-Knöpfe fallen auf dem Blatt WEG. Freigegeben
+   wurden die Angaben für die interne Liste; ein Ausdruck hängt am Schwarzen Brett
+   oder liegt herum, und dafür hat niemand seine Zustimmung gegeben. Wer die
+   Zeilen hier wieder einblendet, hebt genau diese Grenze auf. */
+@media print {
+  body.drucken-mannschaften header,
+  body.drucken-mannschaften nav,
+  body.drucken-mannschaften .tab-section:not(#tab-mannschaften),
+  body.drucken-mannschaften .mt-steuerung,
+  body.drucken-mannschaften .mt-hinweis,
+  body.drucken-mannschaften #mt-suche,
+  body.drucken-mannschaften .card-header-row h2,
+  body.drucken-mannschaften .mt-werte,
+  body.drucken-mannschaften .kontakt-aktionen { display: none !important; }
+
+  body.drucken-mannschaften { background: var(--white); }
+  body.drucken-mannschaften main { max-width: none; padding: 0; }
+  body.drucken-mannschaften .card { box-shadow: none; padding: 0; margin: 0; }
+  body.drucken-mannschaften .mt-druckkopf {
+    display: block;
+    font-size: 15px;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 14px;
+  }
+  /* Eine Mannschaft soll nicht über den Seitenumbruch zerrissen werden. */
+  body.drucken-mannschaften .mt-team {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    border: none;
+    border-top: 1px solid #999;
+    border-radius: 0;
+    padding: 8px 0;
+  }
+  body.drucken-mannschaften .mt-liste { gap: 0; }
+  body.drucken-mannschaften .mt-kurz { background: none; padding: 0; color: #000; }
+  body.drucken-mannschaften .mt-rolle { background: none; padding: 0 0 0 4px; }
+  body.drucken-mannschaften .mt-rolle::before { content: "\2014 "; }
+  body.drucken-mannschaften .mt-person { border-top: none; margin-top: 0; padding: 2px 0; }
+}
+
+/* ---------- Handy: Formularfelder mindestens 16px ----------
+   iOS Safari zoomt beim Antippen eines Feldes unter 16px automatisch in die
+   Seite hinein — und wieder heraus zoomt es nicht. Die Feldregeln weiter oben
+   laufen über Klassen und sind damit höher spezifisch als ein reiner
+   Elementsatz, deshalb hier !important. Gilt nur auf schmalen Schirmen, das
+   Desktop-Design bleibt unverändert. */
+@media (max-width: 820px) {
+  input, select, textarea { font-size: 16px !important; }
+}
