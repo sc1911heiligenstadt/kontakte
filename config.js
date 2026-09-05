@@ -11,6 +11,19 @@ const FREIGABE_URL = "https://sc1911heiligenstadt.github.io/ToolsUebersicht/";
 
 const APP_CHANGELOG = [
   {
+    version: "1.1",
+    groups: [
+      {
+        title: "Wer ausgeschieden ist, steht nicht mehr in der Liste",
+        items: [
+          "Wird ein Konto archiviert, verschwindet die Person jetzt aus der Kontaktliste. Vorher stand sie unverändert mit Nummer, E-Mail und Anschrift da — samt Anruf-, WhatsApp- und Mail-Knopf.",
+          "Sie konnte ihre Freigabe auch nicht selbst zurückziehen: dafür bräuchte sie einen Login, und der ist mit dem Archivieren gesperrt.",
+          "Dasselbe gilt für die Geburtstage auf der Startseite der Tools-Übersicht."
+        ]
+      }
+    ]
+  },
+  {
     version: "1.0",
     groups: [
       {
