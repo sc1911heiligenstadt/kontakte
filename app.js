@@ -85,8 +85,27 @@ function adresseZeilen(a) {
   return zeilen;
 }
 
+// Was die App kann. Quelle: APP_FUNKTIONEN in config.js — bewusst getrennt vom
+// Changelog: Hier steht der Zustand, dort die Historie.
+function renderFunktionen() {
+  const container = document.getElementById("funktionen-list");
+  if (!container) return;
+  container.innerHTML = APP_FUNKTIONEN.map((g) => `
+    <div class="changelog-group">
+      <div class="cg-title">${escapeHtml(g.title)}</div>
+      <ul class="cg-items">${g.items.map((i) => `<li>${escapeHtml(i)}</li>`).join("")}</ul>
+    </div>
+  `).join("");
+}
+
+// Der Changelog wird seit 07.09.2026 nicht mehr angezeigt — die Karte
+// „Änderungen“ ist aus dem Info-Reiter raus. APP_CHANGELOG bleibt gepflegt
+// (Quelle für die große Anleitung und die Neuigkeiten der Tools-Übersicht),
+// deshalb bleibt auch dieser Renderer stehen. Er findet seinen Container nur
+// nicht mehr und tut dann nichts.
 function renderChangelog() {
   const list = document.getElementById("changelog-list");
+  if (!list) return;
   list.innerHTML = APP_CHANGELOG.map((entry) => `
     <div class="changelog-entry">
       <span class="cv">Version ${escapeHtml(entry.version)}</span>
@@ -479,7 +498,7 @@ function showConnectScreen(errorMsg) {
 }
 
 async function init() {
-  document.getElementById("version-badge-2").textContent = "v" + APP_VERSION;
+  renderFunktionen();
   renderChangelog();
   setupTabs();
   document.getElementById("link-freigabe").href = FREIGABE_URL;

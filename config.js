@@ -9,7 +9,96 @@ const APP_VERSION = "1.0";
 // und zieht die Fließtexte in index.html mit (sie nennen den Tab beim Namen).
 const FREIGABE_URL = "https://sc1911heiligenstadt.github.io/ToolsUebersicht/";
 
+// Was die Kontakte koennen -- steht im Info-Reiter als Karte "Funktionen".
+// WICHTIG: Das ist NICHT der Changelog. Hier steht der ZUSTAND ("die Nummer
+// steht nur nach Freigabe da"), dort die Aenderung. Wer eine Funktion umbaut
+// oder abschaltet, zieht diesen Text mit -- und ebenso die grosse Anleitung,
+// wo dasselbe ausfuehrlich steht.
+const APP_FUNKTIONEN = [
+  {
+    title: "Wofür die Kontakte da sind",
+    items: [
+      "Das Telefonbuch des Vereins: Name, Telefonnummer, E-Mail-Adresse und Anschrift der Kolleginnen und Kollegen an einer Stelle.",
+      "Dazu eine Übersicht, wer welche Mannschaft betreut — von der Ersten bis zu den Bambini.",
+      "Die Liste sehen nur angemeldete Personen des Vereins."
+    ]
+  },
+  {
+    title: "Nichts steht hier ohne Freigabe",
+    items: [
+      "Jede Angabe erscheint nur, wenn die Person sie selbst freigegeben hat. Freigegeben wird in der Tools-Übersicht im Reiter „Mein Konto“, einzeln für Name, Telefonnummer, E-Mail-Adresse und Anschrift.",
+      "Ein entferntes Häkchen wirkt sofort. Wer nichts freigibt, erscheint hier gar nicht — daraus entsteht kein Nachteil.",
+      "Was nicht freigegeben ist, verlässt den Server gar nicht erst. Es wird nicht bloß am Bildschirm ausgeblendet.",
+      "Ist ein Konto archiviert, verschwindet die Person aus der Kontaktliste."
+    ]
+  },
+  {
+    title: "Kontakte suchen",
+    items: [
+      "Der Reiter „Kontakte“ zeigt je Person eine Karte mit den freigegebenen Angaben.",
+      "Über dem Verzeichnis steht ein Suchfeld. Es filtert nach Name, Ort und Nummer."
+    ]
+  },
+  {
+    title: "Anrufen, WhatsApp und E-Mail",
+    items: [
+      "Neben jeder Telefonnummer steht ein Knopf „Anrufen“ — ein Tipp, und das Telefon wählt.",
+      "Bei Handynummern kommt ein WhatsApp-Knopf dazu, der das Nachrichtenfenster mit dieser Person öffnet. Bei Festnetznummern fehlt er bewusst: dort gibt es kein WhatsApp.",
+      "Neben der E-Mail-Adresse öffnet ein Knopf „Mail“ das Mailprogramm.",
+      "Wer nur seine Anschrift freigegeben hat, bekommt keine Knöpfe. Am Handy zeigen die Knöpfe nur ihr Symbol, damit die Karten schmal bleiben."
+    ]
+  },
+  {
+    title: "Wer betreut welche Mannschaft",
+    items: [
+      "Der Reiter „Mannschaften“ listet die Mannschaften mit Liga, Jahrgang und den Personen, die sie betreuen.",
+      "Den Jahrgang rechnet das Werkzeug aus Saison und Altersstufe selbst aus; niemand trägt ihn jede Saison neu ein.",
+      "Gab es die Mannschaften schon früher, lässt sich oben zwischen den Saisons umschalten.",
+      "Eine Mannschaft, bei der noch niemand eingetragen ist, bleibt in der Liste stehen und sagt das offen. So fällt auf, wenn etwas fehlt."
+    ]
+  },
+  {
+    title: "Was in der Mannschaftsübersicht steht",
+    items: [
+      "Name und Rolle stehen dort immer — das gehört zur Vereinsorganisation und steht ohnehin an jedem Aushang.",
+      "Telefonnummer und E-Mail-Adresse stehen nur bei den Personen, die sie freigegeben haben.",
+      "Die Anschrift wird in dieser Ansicht nie gezeigt, auch wenn sie freigegeben ist."
+    ]
+  },
+  {
+    title: "Suchen und Drucken in der Mannschaftsübersicht",
+    items: [
+      "Das Suchfeld findet Mannschaften („D2“, „Bambini“), Ligen, Jahrgänge, Namen, Rollen sowie die freigegebenen Nummern und Adressen — damit sich ein Anrufer nachschlagen lässt.",
+      "Wird nach einer Mannschaft gesucht, bleibt sie vollständig stehen. Wird nach einem Namen gesucht, erscheinen die Mannschaften dieser Person, und darin nur sie.",
+      "Der Knopf „Drucken“ macht ein Blatt fürs Schwarze Brett: Mannschaft, Liga, Jahrgang und Namen, aber ohne Telefonnummern und E-Mail-Adressen.",
+      "Gedruckt wird, was zu sehen ist. Ein Suchbegriff steht mit auf dem Blatt, damit eine gefilterte Liste nicht wie die vollständige aussieht."
+    ]
+  },
+  {
+    title: "Woher die Angaben kommen",
+    items: [
+      "Die Daten liegen in den Trainerdaten und werden nicht doppelt gepflegt. Diese App speichert selbst nichts — sie liest nur.",
+      "Bankverbindung, Geburtsdatum und Dokumente sind hier grundsätzlich nie zu sehen.",
+      "Endet die Anmeldung, während die App offen ist, wird der Bildschirm geräumt, und jeder Weg führt auf den Anmelde-Hinweis.",
+      "Der Reiter „Info“ ist für alle sichtbar."
+    ]
+  }
+];
+
 const APP_CHANGELOG = [
+  {
+    version: "1.2",
+    groups: [
+      {
+        title: "Im Info-Reiter steht jetzt, was die App kann",
+        items: [
+          "Die Liste der Änderungen und die Versionsnummer sind aus dem Info-Reiter verschwunden.",
+          "Stattdessen steht dort die Karte „Funktionen“: was die App kann, nach Themen geordnet.",
+          "Was sich geändert hat, steht weiterhin in den Neuigkeiten auf der Startseite der Tools-Übersicht."
+        ]
+      }
+    ]
+  },
   {
     version: "1.1",
     groups: [
